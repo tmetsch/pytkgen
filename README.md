@@ -40,7 +40,7 @@ offers some routines which will make your life easy:
     everything which is defined for this particular widget with it using known
     techniques.
     
-  * button(name, cmd) - Associates a 'Button' widget with an command - For
+  * button(name, cmd) - Associates a 'Button' widget with a command - For
     example: 'root.destroy'.
     
   * checkbox(name) - Returns an 'IntVar' for a 'Checkbox' so you can retrieve
