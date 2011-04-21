@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 #
 # Copyright (c) 2011. All rights reserved.

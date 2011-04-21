@@ -22,7 +22,7 @@ import tkgen.gengui
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
-    root = gui.initialize('ui.json', title = 'Some test gui...')
+    root = gui.initialize('example.json', title = 'Some test gui...')
 
     # config vars for checkboxes etc.
     c = gui.checkbox('check')

@@ -21,7 +21,7 @@
 from distutils.core import setup
 
 setup(name = 'pytkgen',
-      version = '1.0',
+      version = '1.1',
       description = 'Create Tkinter GUIs from XML/JSON definition files.',
       author = 'Thijs Metsch',
       author_email = 'tmetsch@opensolaris.org',

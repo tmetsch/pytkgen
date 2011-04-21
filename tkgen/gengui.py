@@ -175,7 +175,10 @@ class Generator(object):
         """
         Find a Tk widget by name and return it.
         """
-        return self._find_by_name(self.frame, name)
+        result = self._find_by_name(self.frame, name)
+        if result is None:
+            raise KeyError('Tkinter widget with name "' + name + '" not found.')
+        return result
 
     def _find_by_name(self, parent, name):
         """
@@ -184,11 +187,15 @@ class Generator(object):
         Needs to be recursive because of frames in frames in frames in ... :-)
         """
         items = parent.children
+        result = None
         if name in items.keys():
             return items[name]
         else:
             for key in items.keys():
                 if hasattr(items[key],
                            'children') and len(items[key].children) > 0:
-                    return self._find_by_name(items[key], name)
-            raise KeyError('Tk widget with name "' + name + '" not found')
+                    result = self._find_by_name(items[key], name)
+                    if result is not None:
+                        break
+
+        return result
