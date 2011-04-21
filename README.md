@@ -19,12 +19,34 @@ Or XML:
     root = gui.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
     root.mainloop()
 
-Please see the examples in the 'examples/' directory for more details.
+Please see the examples in the 'examples/' directory for more details on how to
+use this package.
 
 Module can be retrieved from [pypi](http://pypi.python.org/pypi/pytkgen/) as 
 well:
 
     easy_install/pip install pytkgen
+
+Some useful Tipps
+-----------------
+
+So since the GUI itself is defined in a XML or JSON file you need to lookup the
+widgets in your python code to do actual operations on them. The gengui module
+offers some routines which will make your life easy:
+
+  * find(name) - Returns the Tkinter widget object of the widget with the given
+    name. Requires that a name was indeed defined in the definition file for
+    this widget. Now that you have the object for an Tkinter widget you can do
+    everything which is defined for this particular widget with it using known
+    techniques.
+    
+  * button(name, cmd) - Associates a 'Button' widget with an command - For
+    example: 'root.destroy'.
+    
+  * checkbox(name) - Returns an 'IntVar' for a 'Checkbox' so you can retrieve the
+    value (0/1) to see if the User checked the box or not.
+    
+  * entry(name) - Returns the text of an 'Entry' widget.
 
 Feel free to play around with this - I do not guarantee that it is perfect nor
 complete - Have Fun!
