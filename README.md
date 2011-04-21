@@ -21,6 +21,11 @@ Or XML:
 
 Please see the examples in the 'examples/' directory for more details.
 
+Module can be retrieved from pypi (http://pypi.python.org/pypi/pytkgen/) as 
+well:
+
+    easy_install/pip install pytkgen
+
 Feel free to play around with this - I do not guarantee that it is perfect nor
 complete - Have Fun!
 
