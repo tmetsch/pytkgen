@@ -27,8 +27,8 @@ well:
 
     easy_install/pip install pytkgen
 
-Some useful Tipps
------------------
+Some useful Tips
+----------------
 
 So since the GUI itself is defined in a XML or JSON file you need to lookup the
 widgets in your python code to do actual operations on them. The gengui module
@@ -43,8 +43,8 @@ offers some routines which will make your life easy:
   * button(name, cmd) - Associates a 'Button' widget with an command - For
     example: 'root.destroy'.
     
-  * checkbox(name) - Returns an 'IntVar' for a 'Checkbox' so you can retrieve the
-    value (0/1) to see if the User checked the box or not.
+  * checkbox(name) - Returns an 'IntVar' for a 'Checkbox' so you can retrieve
+    the value (0/1) to see if the User checked the box or not.
     
   * entry(name) - Returns the text of an 'Entry' widget.
 
