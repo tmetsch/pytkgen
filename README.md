@@ -9,17 +9,19 @@ able to parse these files and return you a Tk root.
 
 To use a JSON file as input:
 
-    tkgen = tkgen.Generator()
-    root = tkgen.initialize('ui.json', title = 'Some test gui...')
+    gui = tkgen.gengui.Generator()
+    root = gui.initialize('ui.json', title = 'Some test gui...')
     root.mainloop()
 
 Or XML:
 
-    tkgen = tkgen.Generator()
-    root = tkgen.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
+    gui = tkgen.gengui.Generator()
+    root = gui.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
     root.mainloop()
 
 Please see the examples in the 'examples/' directory for more details.
 
 Feel free to play around with this - I do not guarantee that it is perfect nor
 complete - Have Fun!
+
+(c) 2011 tmetsch

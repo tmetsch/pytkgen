@@ -20,7 +20,7 @@
 
 from distutils.core import setup
 
-setup(name = 'tkgen',
+setup(name = 'pytkgen',
       version = '1.0',
       description = 'Create Tkinter GUIs from XML/JSON definition files.',
       author = 'Thijs Metsch',

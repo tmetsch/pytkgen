@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 #
 # Copyright (c) 2011. All rights reserved.
@@ -18,23 +18,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301  USA
 
-import tkgen
+import tkgen.gengui
 
 if __name__ == '__main__':
-    tkgen = tkgen.Generator()
-    root = tkgen.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
+    gui = tkgen.gengui.Generator()
+    root = gui.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
 
 
     # config vars for checkboxes etc.
-    c = tkgen.checkbox('check')
+    c = gui.checkbox('check')
 
     def ok():
-        print tkgen.entry('entry')
+        print gui.entry('entry')
         print c.get()
         root.destroy()
 
     # add button behaviour
-    tkgen.button('ok', ok)
-    tkgen.button('cancel', root.destroy)
+    gui.button('ok', ok)
+    gui.button('cancel', root.destroy)
 
     root.mainloop()
