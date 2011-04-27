@@ -1,9 +1,9 @@
 
-Create Tkinter GUIs from XML or JSON definition files
-=====================================================
+Create Tkinter GUIs from JSON definition files
+==============================================
 
 The idea behind this simple module is that you can define Tkinter GUIs in
-either JSON or XML format. All value which can be configured for an widget can
+a JSON file format. All value which can be configured for an widget can
 be defined in those files. The module 'tkgen' has an Generator class which is
 able to parse these files and return you a Tk root.
 
@@ -11,12 +11,6 @@ To use a JSON file as input:
 
     gui = tkgen.gengui.Generator()
     root = gui.initialize('ui.json', title = 'Some test gui...')
-    root.mainloop()
-
-Or XML:
-
-    gui = tkgen.gengui.Generator()
-    root = gui.initialize('ui.xml', type = 'xml', title = 'Some test gui...')
     root.mainloop()
 
 Please see the examples in the 'examples/' directory for more details on how to
@@ -30,7 +24,7 @@ well:
 Some useful Tips
 ----------------
 
-So since the GUI itself is defined in a XML or JSON file you need to lookup the
+So since the GUI itself is defined in a JSON file you need to lookup the
 widgets in your python code to do actual operations on them. The gengui module
 offers some routines which will make your life easy:
 
@@ -47,6 +41,27 @@ offers some routines which will make your life easy:
     the value (0/1) to see if the User checked the box or not.
     
   * entry(name) - Returns the text of an 'Entry' widget.
+  
+  * create_menu({'Help':open_help_dialog}) - Create a new menu entry in the Tk
+    root's menu.
+    
+  * filemenu = gui.create_menu({'Exit': exit}, name='File') - Create a new
+    drop-down File menu and add an Exit command to it.
+    
+  * gui.create_menu({'foo': ok}, name='Sub', parent=filemenu) - Create a submenu
+    in the filemenu.
+
+Changelog
+---------
+
+1.2
+^^^
+  * Support for creation of menus
+  * Support for multiple frames in JSON
+
+1.1
+^^^
+  * Initial
 
 Feel free to play around with this - I do not guarantee that it is perfect nor
 complete - Have Fun!

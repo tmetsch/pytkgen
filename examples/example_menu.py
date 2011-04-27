@@ -22,19 +22,20 @@ import tkgen.gengui
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
-    root = gui.initialize('example.xml', type = 'xml', title = 'Some test gui...')
+    root = gui.initialize('example_menu.json', title = 'Some test gui...')
 
+    def hello():
+        print 'Hello world'
 
-    # config vars for checkboxes etc.
-    c = gui.checkbox('check')
-
-    def ok():
-        print gui.entry('entry')
-        print c.get()
+    def exit_app():
         root.destroy()
 
-    # add button behaviour
-    gui.button('ok', ok)
-    gui.button('cancel', root.destroy)
+    gui.create_menu({'Exit': exit_app}, name='File')
+    some_menu = gui.create_menu({'Item': hello}, name='Menu')
+    gui.create_menu({'Subitem': hello}, name='Submenu', parent=some_menu)
+    gui.create_menu({'?': hello})
+
+    gui.button('cancel', exit_app)
+    gui.button('ok', hello)
 
     root.mainloop()

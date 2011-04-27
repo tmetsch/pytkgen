@@ -1,0 +1,32 @@
+{
+    "Frame":[
+        {
+            "name":"content",
+            "bg":"gray",
+            "row":0,
+            "Label":{
+               "text":"Some content",
+               "column": 0,
+               "row": 0
+            }
+        },
+        {
+            "name":"bottom",
+            "row":1,
+            "Button":[
+               {
+                   "name":"ok",
+                   "text":"OK",
+                   "column": 0,
+                   "row": 1
+               },
+               {
+                   "name":"cancel",
+                   "text":"Cancel",
+                   "column": 1,
+                   "row": 1
+               }
+            ]
+        }
+    ]
+}
