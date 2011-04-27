@@ -55,12 +55,12 @@ Changelog
 ---------
 
 1.2
-^^^
+
   * Support for creation of menus
   * Support for multiple frames in JSON
 
 1.1
-^^^
+
   * Initial
 
 Feel free to play around with this - I do not guarantee that it is perfect nor
