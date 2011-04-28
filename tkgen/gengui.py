@@ -18,9 +18,9 @@
 
 from Tkconstants import W, E, N, S
 from Tkinter import Tk, IntVar
-import Tkinter
+
 import json
-import xml.etree.ElementTree as etree
+import Tkinter
 
 '''
 Simple class which wraps Tk and uses some JSON to contruct a GUI...
@@ -46,6 +46,12 @@ class Generator(object):
         ui = json.load(ui_file)
 
         self.create_widgets(self.root, ui)
+        self.root.grid()
+        #x,y = self.root.grid_size()
+        #for i in range(0,x):
+        #self.root.columnconfigure(0,weight=1)
+        #for j in range(0,y):
+        #self.root.rowconfigure(0,weight=1)
 
         return self.root
 
@@ -64,7 +70,7 @@ class Generator(object):
                 self.create_widgets(widget, current)
             elif isinstance(current, dict) and self._contains_dict(current):
                 widget = self._create_widget(name, parent, current)
-                                
+                
                 self.create_widgets(widget, current)
             elif isinstance(current, list):
                 for item in current:
@@ -91,7 +97,8 @@ class Generator(object):
         """
         result = False
         for item in items.keys():
-            if isinstance(items[item], list):
+            if isinstance(items[item], list) and item is not item.lower():
+                # the .lower check ensures that I can have attribute lists
                 result = True
                 break
         return result    
@@ -106,15 +113,27 @@ class Generator(object):
         parent -- The parent widget.
         desc -- Dictionary containing the description for this widget.
         """
-        row, column, columnspan, options = self._get_options(desc)
-        widget_factory = getattr(Tkinter, name)
+        row, column, columnspan, rowweight, colweight, options = self._get_options(desc)
+        try:
+            widget_factory = getattr(Tkinter, name)
+        except AttributeError:
+            try:
+                import ttk
+                widget_factory = getattr(ttk, name)
+            except AttributeError:
+                raise AttributeError('Neither Tkinter nor ttk have a widget named: ', name)
+
         widget = widget_factory(parent, **options)
         widget.grid(row = row,
                     column = column,
                     columnspan = columnspan,
-                    sticky = W + E + N + S,
+                    sticky = N + E + W + S,
                     padx = 3,
                     pady = 3)
+        if rowweight > 0:
+            parent.rowconfigure(row, weight=rowweight)
+        if colweight > 0:
+            parent.columnconfigure(column, weight=colweight)
         return widget
 
     def _get_options(self, dictionary):
@@ -127,6 +146,8 @@ class Generator(object):
         row = 0
         column = 0
         colspan = 1
+        rowweight = 0
+        colweight = 0
         if 'row' in dictionary:
             row = dictionary['row']
             dictionary.pop('row')
@@ -135,11 +156,24 @@ class Generator(object):
             dictionary.pop('column') 
         if 'columnspan' in dictionary:
             colspan = dictionary['columnspan']
-            dictionary.pop('columnspan')            
+            dictionary.pop('columnspan')
+        if 'rowweight' in dictionary:
+            rowweight = dictionary['rowweight']
+            dictionary.pop('rowweight')
+        if 'colweight' in dictionary:
+            colweight = dictionary['colweight']
+            dictionary.pop('colweight')
+        if 'weight' in dictionary:
+            colweight = dictionary['weight']
+            rowweight = dictionary['weight']
+            dictionary.pop('weight')                
         for key in dictionary.keys():
             if not isinstance(dictionary[key], dict) and not isinstance(dictionary[key], list):
                 options[str(key)] = str(dictionary[key])
-        return row, column, colspan, options
+            elif isinstance(dictionary[key], list) and key == key.lower():
+                # so we habe an attribute list...
+                options[str(key)] = str(dictionary[key])
+        return row, column, colspan, rowweight, colweight, options
 
     def _find_by_name(self, parent, name):
         """
@@ -147,7 +181,6 @@ class Generator(object):
 
         Needs to be recursive because of frames in frames in frames in ... :-)
         """
-        #print 'looking for ' + name + ' in ' + repr(parent.children)
         items = parent.children
         result = None
         if name in items.keys():
@@ -192,6 +225,32 @@ class Generator(object):
         """
         item = self._find_by_name(self.root, name)
         return item.get()
+
+    def notebook(self, parent, filename, name='Tab'):
+        """
+        Add a tab to a tkk notebook widget.
+
+        parent -- The parent notebook widget instance.
+        filename -- The file which describes the content of the tab.
+        name -- The name of the tab.
+        """
+        frame = Tkinter.Frame()
+        ui_file = open(filename)
+        tab1_def = json.load(ui_file)
+        self.create_widgets(frame, tab1_def)
+        parent.add(frame, text=name)
+
+    def treeview(self, treeview, name, values, parent='', index=0):
+        """
+        Adds an item to a treeview.
+
+        treeview -- The treeview to add the items to.
+        name -- The name of the value.
+        values -- The values itself.
+        parent -- Default will create root items, specify a parent to create a leaf.
+        index -- If index < current # of items - insert at the top (Default: 0).
+        """
+        return treeview.insert(parent, index, text=name, values=values)
 
     def find(self, name):
         """

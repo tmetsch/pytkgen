@@ -1,139 +1,145 @@
 {
-    "Frame":{
-        "LabelFrame":[
-            {
-                "text":"Prims",
-                "borderwidth":2,
-                "relief":"groove",
-                "column": 0,
-                "columnspan": 3,
-                "row": 0,
-                "Label":[
-                    {
-                        "text":"p: ",
-                        "column":0,
-                        "row":0
-                    },
-                    {
-                        "text":"q: ",
-                        "column":0,
-                        "row":1
-                    },
-                    {
-                        "text":"Message: ",
-                        "column":0,
-                        "row":2
-                    }
-                ],
-                "Entry":[
-                    {
-                        "name":"p",
-                        "bg":"gold",
-                        "width":10,
-                        "column":1,
-                        "row":0
-                    },
-                    {
-                        "name":"q",
-                        "bg":"gold",
-                        "width":10,
-                        "column":1,
-                        "row":1
-                    },
-                    {
-                        "name":"msg",
-                        "bg":"gold",
-                        "width":10,
-                        "column":1,
-                        "row":2
-                    }
-                ]
-            },
-            {
-                "text":"Calculated Values",
-                "borderwidth":2,
-                "relief":"groove",
-                "column": 0,
-                "columnspan": 3,
-                "row": 1,
-                "Label":[
-                    {
-                        "text":"Private Key (d, n): ",
-                        "column":0,
-                        "row":0
-                    },
-                    {
-                        "text":"Public Key (e, n): ",
-                        "column":0,
-                        "row":1
-                    },
-                    {
-                        "text":"Cryped Message: ",
-                        "column":0,
-                        "row":2
-                    },
-                    {
-                        "text":"Original Message: ",
-                        "column":0,
-                        "row":3
-                    }
-                ],
-                "Entry":[
-                    {
-                        "name":"priv",
-                        "disabledforeground":"black",
-                        "state":"disable",
-                        "width":10,
-                        "column":1,
-                        "row":0
-                    },
-                    {
-                        "name":"pub",
-                        "disabledforeground":"black",
-                        "state":"disable",
-                        "width":10,
-                        "column":1,
-                        "row":1
-                    },
-                    {
-                        "name":"c_msg",
-                        "disabledforeground":"black",
-                        "state":"disable",
-                        "width":10,
-                        "column":1,
-                        "row":2
-                    },
-                    {
-                        "name":"d_msg",
-                        "disabledforeground":"black",
-                        "state":"disable",
-                        "width":10,
-                        "column":1,
-                        "row":3
-                    }
-                ]
-            }
-        ],    
-        "Label":{
-            "text":" ",
-            "column":0,
-            "row":2
+    "LabelFrame":[
+        {
+            "text":"Prims",
+            "borderwidth":2,
+            "relief":"groove",
+            "column": 0,
+            "columnspan": 3,
+            "row": 0,
+            "colweight": 1,
+            "Label":[
+                {
+                    "text":"p: ",
+                    "column":0,
+                    "row":0
+                },
+                {
+                    "text":"q: ",
+                    "column":0,
+                    "row":1
+                },
+                {
+                    "text":"Message: ",
+                    "column":0,
+                    "row":2
+                }
+            ],
+            "Entry":[
+                {
+                    "name":"p",
+                    "bg":"gold",
+                    "width":10,
+                    "column":1,
+                    "row":0,
+                    "colweight": 1
+                },
+                {
+                    "name":"q",
+                    "bg":"gold",
+                    "width":10,
+                    "column":1,
+                    "row":1,
+                    "colweight": 1
+                },
+                {
+                    "name":"msg",
+                    "bg":"gold",
+                    "width":10,
+                    "column":1,
+                    "row":2,
+                    "colweight": 1
+                }
+            ]
         },
-        "Button":[
-            {
-                "name":"ok",
-                "text":"OK",
-                "column": 1,
-                "row": 2
-            },
-            {
-                "name":"exit",
-                "text":"Exit",
-                "column": 2,
-                "row": 2
-            }
-        ]
-    }
+        {
+            "text":"Calculated Values",
+            "borderwidth":2,
+            "relief":"groove",
+            "column": 0,
+            "columnspan": 3,
+            "row": 1,
+            "Label":[
+                {
+                    "text":"Private Key (d, n): ",
+                    "column":0,
+                    "row":0
+                },
+                {
+                    "text":"Public Key (e, n): ",
+                    "column":0,
+                    "row":1
+                },
+                {
+                    "text":"Cryped Message: ",
+                    "column":0,
+                    "row":2
+                },
+                {
+                    "text":"Original Message: ",
+                    "column":0,
+                    "row":3
+                }
+            ],
+            "Entry":[
+                {
+                    "name":"priv",
+                    "disabledforeground":"black",
+                    "state":"disable",
+                    "width":10,
+                    "column":1,
+                    "row":0,
+                    "colweight": 1
+                },
+                {
+                    "name":"pub",
+                    "disabledforeground":"black",
+                    "state":"disable",
+                    "width":10,
+                    "column":1,
+                    "row":1,
+                    "colweight": 1
+                },
+                {
+                    "name":"c_msg",
+                    "disabledforeground":"black",
+                    "state":"disable",
+                    "width":10,
+                    "column":1,
+                    "row":2,
+                    "colweight": 1
+                },
+                {
+                    "name":"d_msg",
+                    "disabledforeground":"black",
+                    "state":"disable",
+                    "width":10,
+                    "column":1,
+                    "row":3,
+                    "colweight": 1
+                }
+            ]
+        }
+    ],    
+    "Label":{
+        "text":" ",
+        "column":0,
+        "row":2
+    },
+    "Button":[
+        {
+            "name":"ok",
+            "text":"OK",
+            "column": 1,
+            "row": 2
+        },
+        {
+            "name":"exit",
+            "text":"Exit",
+            "column": 2,
+            "row": 2
+        }
+    ]
 }
 
 

@@ -4,6 +4,7 @@
             "name":"content",
             "bg":"gray",
             "row":0,
+            "weight":1,
             "Label":{
                "text":"Some content",
                "column": 0,

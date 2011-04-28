@@ -42,6 +42,12 @@ offers some routines which will make your life easy:
     
   * entry(name) - Returns the text of an 'Entry' widget.
   
+  * notebook(notebook, 'tab.json', name='Tab 1') - Adds a tab to a tkk Notebook
+    widget which is itself defined by a JSON file.
+  
+  * item = gui.treeview(treeview, 'item', ['foo', 'bar']) - Adds an entry to a
+    Treeview widget and returns it.
+  
   * create_menu({'Help':open_help_dialog}) - Create a new menu entry in the Tk
     root's menu.
     
@@ -58,6 +64,11 @@ Changelog
 
   * Support for creation of menus
   * Support for multiple frames in JSON
+  * Support for ttk widgets (Treeview, Notebook, Separator, Progressbar, ...)
+  * Resizing capabilities added (Weights can now be defined in the JSON file; 1 
+    means the widget resize in general, rowweight=1 means it resize horizontal, 
+    colweight=1 means it resize vertical; Values > 1 mean that this widget will
+    resize 'faster' (See Tk documentation for more information)).
 
 1.1
 

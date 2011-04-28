@@ -1,44 +1,51 @@
 {
-    "Frame":{
-        "LabelFrame":{
-            "text":"Hello World",
+    "LabelFrame":{
+        "text":"Hello World",
+        "weight":1,
+        "column": 0,
+        "columnspan": 3,
+        "row": 0,
+        "Label":{
+            "text":"Entry:",
             "column": 0,
-            "columnspan": 2,
-            "row": 0,
-            "Label":{
-                "text":"Entry:",
-                "column": 0,
-                "row": 0
-            },          
-            "Checkbutton":{
-                "name":"check",
-                "text":"checkbutton",
-                "column": 1,
-                "row": 0
-            },
-            "Entry":{
-                "name":"entry",
-                "text":"checkbutton",
-                "width":"30",
-                "bg":"gold",
-                "column": 0,
-                "row": 1,
-                "columnspan": 2
-            }
+            "row": 0
+        },          
+        "Checkbutton":{
+            "name":"check",
+            "text":"checkbutton",
+            "column": 1,
+            "row": 0
         },
-        "Button":[
-            {
-                "name":"ok",
-                "text":"OK",
-                "column": 0,
-                "row": 1
-            },
-            {
-                "name":"cancel",
-                "text":"Cancel",
-                "column": 1,
-                "row": 1
-            }
-        ]
-    }
+        "Entry":{
+            "name":"entry",
+            "text":"checkbutton",
+            "width":"30",
+            "bg":"gold",
+            "column": 0,
+            "row": 1,
+            "colweight":1,
+            "columnspan": 2
+        }
+    },
+    "Label":{
+        "name":"empty",
+        "text":" ",
+        "column": 0,
+        "row": 1,
+        "colweight":1
+        },
+    "Button":[        
+        {
+            "name":"ok",
+            "text":"OK",
+            "column": 1,
+            "row": 1
+        },
+        {
+            "name":"cancel",
+            "text":"Cancel",
+            "column": 2,
+            "row": 1
+        }
+    ]
 }

@@ -1,0 +1,14 @@
+{
+    "Notebook":{
+        "name":"notebook",
+        "row":0,
+        "weight":1
+    },
+    "Separator":{
+        "row":1
+    },
+    "Progressbar":{
+        "name":"progressbar",
+        "row":2
+    }
+}
