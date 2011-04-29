@@ -19,6 +19,7 @@
 # MA 02110-1301  USA
 
 import tkgen.gengui
+from Tkinter import Toplevel
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
@@ -27,13 +28,32 @@ if __name__ == '__main__':
     def hello():
         print 'Hello world'
 
+    def open_popup():
+        gui.toplevel('example_menu_dialog.json', title = 'A dialog')
+        gui.button('cancel_dialog', close_popup)
+
+    def close_popup():
+        dialog = gui.find('dialog')
+        dialog.master.destroy()
+
     def exit_app():
         root.destroy()
 
+    # Traditional menu
     gui.create_menu({'Exit': exit_app}, name='File')
     some_menu = gui.create_menu({'Item': hello}, name='Menu')
     gui.create_menu({'Subitem': hello}, name='Submenu', parent=some_menu)
     gui.create_menu({'?': hello})
+
+    # Popup menu
+    popup_menu = gui.create_menu({'Foo':open_popup, 'Bar':open_popup}, popup=True)
+
+    def popup(event):
+        popup_menu.post(event.x_root, event.y_root)
+
+    # attach popup to frame
+    frame = gui.find('content')
+    frame.bind("<Button-3>", popup)
 
     gui.button('cancel', exit_app)
     gui.button('ok', hello)

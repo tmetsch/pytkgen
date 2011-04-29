@@ -20,6 +20,8 @@
 
 import tkgen.gengui
 
+from Tkinter import *
+
 if __name__ == '__main__':
 
     def exit_app():
@@ -34,7 +36,8 @@ if __name__ == '__main__':
     gui.notebook(notebook, 'example_ttk_notebook_tab_2.json', name='Tab 2')
 
     # alter an entry in a notebook tab
-    gui.find('foo').config(text="The second Tab has a Treeview in it...")
+    text = gui.label('foo')
+    text.set('The second Tab has a Treeview in it...')
 
     # progressbar
     progressbar = gui.find('progressbar')

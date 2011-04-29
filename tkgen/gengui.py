@@ -17,7 +17,7 @@
 # MA 02110-1301  USA
 
 from Tkconstants import W, E, N, S
-from Tkinter import Tk, IntVar
+from Tkinter import Tk, IntVar, StringVar
 
 import json
 import Tkinter
@@ -46,13 +46,7 @@ class Generator(object):
         ui = json.load(ui_file)
 
         self.create_widgets(self.root, ui)
-        self.root.grid()
-        #x,y = self.root.grid_size()
-        #for i in range(0,x):
-        #self.root.columnconfigure(0,weight=1)
-        #for j in range(0,y):
-        #self.root.rowconfigure(0,weight=1)
-
+        
         return self.root
 
     def create_widgets(self, parent, items):
@@ -70,7 +64,7 @@ class Generator(object):
                 self.create_widgets(widget, current)
             elif isinstance(current, dict) and self._contains_dict(current):
                 widget = self._create_widget(name, parent, current)
-                
+
                 self.create_widgets(widget, current)
             elif isinstance(current, list):
                 for item in current:
@@ -114,6 +108,7 @@ class Generator(object):
         desc -- Dictionary containing the description for this widget.
         """
         row, column, columnspan, rowweight, colweight, options = self._get_options(desc)
+        
         try:
             widget_factory = getattr(Tkinter, name)
         except AttributeError:
@@ -124,16 +119,24 @@ class Generator(object):
                 raise AttributeError('Neither Tkinter nor ttk have a widget named: ', name)
 
         widget = widget_factory(parent, **options)
+
         widget.grid(row = row,
                     column = column,
                     columnspan = columnspan,
                     sticky = N + E + W + S,
-                    padx = 3,
-                    pady = 3)
+                    padx = 2,
+                    pady = 2)
+
+        # propaget size settings when needed.
+        if 'width' in options or 'height' in options:
+            widget.grid_propagate(0)
+
+        # set parent weight of the cells
         if rowweight > 0:
             parent.rowconfigure(row, weight=rowweight)
         if colweight > 0:
             parent.columnconfigure(column, weight=colweight)
+            
         return widget
 
     def _get_options(self, dictionary):
@@ -148,6 +151,7 @@ class Generator(object):
         colspan = 1
         rowweight = 0
         colweight = 0
+        
         if 'row' in dictionary:
             row = dictionary['row']
             dictionary.pop('row')
@@ -171,8 +175,9 @@ class Generator(object):
             if not isinstance(dictionary[key], dict) and not isinstance(dictionary[key], list):
                 options[str(key)] = str(dictionary[key])
             elif isinstance(dictionary[key], list) and key == key.lower():
-                # so we habe an attribute list...
+                # so we have an attribute list...
                 options[str(key)] = str(dictionary[key])
+
         return row, column, colspan, rowweight, colweight, options
 
     def _find_by_name(self, parent, name):
@@ -210,7 +215,7 @@ class Generator(object):
         """
         Associates a IntVar with a checkbox.
 
-        name -- Name of the Checkbox
+        name -- Name of the Checkbox.
         """
         c = IntVar()
         item = self._find_by_name(self.root, name)
@@ -226,6 +231,31 @@ class Generator(object):
         item = self._find_by_name(self.root, name)
         return item.get()
 
+    def label(self, name):
+        """
+        Associate a StringVar with a label.
+
+        name -- Name of the Label.
+        """
+        v = StringVar()
+        item = self._find_by_name(self.root, name)
+        item.config(textvariable=v)
+        return v
+
+    def toplevel(self, filename, title='Dialog'):
+        """
+        Open a Toplevel widget.
+
+        parent -- The parent notebook widget instance.
+        title -- The title for the dialog.
+        """
+        dialog = Tkinter.Toplevel()
+        dialog.title(title)
+        ui_file = open(filename)
+        dialog_def = json.load(ui_file)
+        self.create_widgets(dialog, dialog_def)
+        dialog.grid()
+        
     def notebook(self, parent, filename, name='Tab'):
         """
         Add a tab to a tkk notebook widget.
@@ -261,25 +291,26 @@ class Generator(object):
             raise KeyError('Tkinter widget with name "' + name + '" not found.')
         return result
 
-    def create_menu(self, commands, name=None, parent=None):
+    def create_menu(self, commands, name=None, parent=None, popup=False):
         """
         Creates a menu(entry) if non is available. Returns the created menu so you can define submenus.
 
         commands -- dict with 'label':'command' structure.
         name -- Needs to be provided if it is a dropdown or submenu.
         parent -- Needs to be provided if it is a submenu.
+        popup -- indicates if it is an popup menu or not (Default: False)
         """
-        if self.menu is None:
+        if self.menu is None and popup is False:
             # If no menu exists create one and add it to the Tk root.
             self.menu = Tkinter.Menu(self.root)
             self.root.config(menu=self.menu)
 
-        if name is None and parent is None and len(commands.keys()) > 0:
+        if name is None and parent is None and popup is False and len(commands.keys()) > 0:
             # Just create a Menu entry.
             for key in commands:
                 self.menu.add_command(label=key, command=commands[key])
             return self.menu
-        elif name is not None and len(commands.keys()) > 0:
+        elif name is not None and popup is False and len(commands.keys()) > 0:
             if parent is None:
                 # Create a top-level drop down menu.
                 tmp_menu = Tkinter.Menu(self.menu)
@@ -289,6 +320,12 @@ class Generator(object):
                 tmp_menu = Tkinter.Menu(parent)
                 parent.add_cascade(label=name, menu=tmp_menu)
                 
+            for key in commands:
+                tmp_menu.add_command(label=key, command=commands[key])
+                
+            return tmp_menu
+        elif popup is True and len(commands.keys()) > 0:
+            tmp_menu = Tkinter.Menu(self.root)
             for key in commands:
                 tmp_menu.add_command(label=key, command=commands[key])
                 

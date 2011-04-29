@@ -5,6 +5,8 @@
             "bg":"gray",
             "row":0,
             "weight":1,
+            "width":300,
+            "height":200,
             "Label":{
                "text":"Some content",
                "column": 0,
