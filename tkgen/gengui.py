@@ -204,22 +204,34 @@ class Generator(object):
     # Rest is public use :-)
     ##
 
-    def button(self, name, cmd):
+    def button(self, name, cmd, focus=False):
         """
         Associate a Tk widget with a function.
+
+        name -- Name of the widget.
+        cmd -- The command to trigger.
+        focus -- indicates wether this item has the focus.
         """
         item = self._find_by_name(self.root, name)
         item.config(command = cmd)
 
-    def checkbox(self, name):
+        if focus:
+            item.focus_set()
+
+    def checkbox(self, name, focus=False):
         """
         Associates a IntVar with a checkbox.
 
         name -- Name of the Checkbox.
+        focus -- indicates wether this item has the focus.
         """
         c = IntVar()
         item = self._find_by_name(self.root, name)
         item.config(variable = c)
+
+        if focus:
+            item.focus_set()
+        
         return c
 
     def entry(self, name, key=None, cmd=None, focus=False):

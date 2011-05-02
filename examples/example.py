@@ -31,7 +31,7 @@ if __name__ == '__main__':
         
     # config vars for checkboxes etc.
     c = gui.checkbox('check')
-    v = gui.entry('entry', key='<Return>', cmd=ok)
+    v = gui.entry('entry', key='<Return>', cmd=ok, focus=True)
 
     # add button behaviour
     gui.button('ok', ok)
