@@ -24,13 +24,14 @@ if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
     root = gui.initialize('example.json', title = 'Some test gui...')
 
-    # config vars for checkboxes etc.
-    c = gui.checkbox('check')
-
-    def ok():
-        print gui.entry('entry')
+    def ok(event=None):
+        print v.get()
         print c.get()
         root.destroy()
+        
+    # config vars for checkboxes etc.
+    c = gui.checkbox('check')
+    v = gui.entry('entry', key='<Return>', cmd=ok)
 
     # add button behaviour
     gui.button('ok', ok)

@@ -19,7 +19,6 @@
 # MA 02110-1301  USA
 
 import tkgen.gengui
-from Tkinter import Toplevel
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
@@ -40,13 +39,13 @@ if __name__ == '__main__':
         root.destroy()
 
     # Traditional menu
-    gui.create_menu({'Exit': exit_app}, name='File')
-    some_menu = gui.create_menu({'Item': hello}, name='Menu')
-    gui.create_menu({'Subitem': hello}, name='Submenu', parent=some_menu)
+    gui.create_menu({'Exit': exit_app}, name = 'File')
+    some_menu = gui.create_menu({'Item': hello}, name = 'Menu')
+    gui.create_menu({'Subitem': hello}, name = 'Submenu', parent = some_menu)
     gui.create_menu({'?': hello})
 
     # Popup menu
-    popup_menu = gui.create_menu({'Foo':open_popup, 'Bar':open_popup}, popup=True)
+    popup_menu = gui.create_menu({'Foo':open_popup, 'Bar':open_popup}, popup = True)
 
     def popup(event):
         popup_menu.post(event.x_root, event.y_root)

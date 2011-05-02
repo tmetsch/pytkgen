@@ -20,7 +20,6 @@
 
 import tkgen.gengui
 
-from Tkinter import *
 
 if __name__ == '__main__':
 
@@ -32,8 +31,8 @@ if __name__ == '__main__':
 
     # add tabs to the notebook
     notebook = gui.find('notebook')
-    gui.notebook(notebook, 'example_ttk_notebook_tab_1.json', name='Tab 1')
-    gui.notebook(notebook, 'example_ttk_notebook_tab_2.json', name='Tab 2')
+    gui.notebook(notebook, 'example_ttk_notebook_tab_1.json', name = 'Tab 1')
+    gui.notebook(notebook, 'example_ttk_notebook_tab_2.json', name = 'Tab 2')
 
     # alter an entry in a notebook tab
     text = gui.label('foo')
@@ -45,15 +44,15 @@ if __name__ == '__main__':
 
     # treeview interaction
     treeview = gui.find('treeview')
-    treeview.heading('#0', text='1')
-    treeview.heading('0', text='2')
-    treeview.heading('1', text='3')
+    treeview.heading('#0', text = '1')
+    treeview.heading('0', text = '2')
+    treeview.heading('1', text = '3')
 
     item = gui.treeview(treeview, 'item', ['foo', 'bar'])
-    leaf = gui.treeview(treeview, 'leafitem', ['foo', 'bar'], parent=item)
-    gui.treeview(treeview, 'first_item', ['foo', 'bar'], index=0)
+    leaf = gui.treeview(treeview, 'leafitem', ['foo', 'bar'], parent = item)
+    gui.treeview(treeview, 'first_item', ['foo', 'bar'], index = 0)
 
     # menu
-    gui.create_menu({'Exit': exit_app}, name='File')
+    gui.create_menu({'Exit': exit_app}, name = 'File')
 
     root.mainloop()
