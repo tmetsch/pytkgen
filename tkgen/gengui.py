@@ -23,7 +23,7 @@ import json
 
 
 '''
-Simple class which wraps Tk and uses some JSON to contruct a GUI...
+Simple class which wraps Tk and uses some JSON to construct a GUI...
 
 Created on Apr 21, 2011
 
