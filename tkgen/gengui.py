@@ -26,9 +26,8 @@ Created on Apr 21, 2011
 
 from Tkconstants import W, E, N, S
 from Tkinter import Tk, IntVar, StringVar
-
-import json
 import Tkinter
+import json
 
 
 class Generator(object):
@@ -246,6 +245,7 @@ class Generator(object):
         return var
 
     def entry(self, name, key=None, cmd=None, focus=False):
+
         """
         Returns the text of a TK widget.
 
@@ -368,7 +368,7 @@ class Generator(object):
         treeview -- The treeview to add the items to.
         name -- The name of the value.
         values -- The values itself.
-        parent -- Default will create root items, specify a parent to create a leaf.
-        index -- If index < current # of items - insert at the top (Default: 0).
+        parent -- Default will create root items, if specified create a leaf.
+        index -- If index < current # of items - insert at the top.
         """
         return treeview.insert(parent, index, text=name, values=values)

@@ -22,13 +22,13 @@ import tkgen.gengui
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
-    root = gui.initialize('example_menu.json', title = 'Some test gui...')
+    root = gui.initialize('example_menu.json', title='Some test gui...')
 
     def hello():
         print 'Hello world'
 
     def open_popup():
-        gui.toplevel('example_menu_dialog.json', title = 'A dialog')
+        gui.toplevel('example_menu_dialog.json', title='A dialog')
         gui.button('cancel_dialog', close_popup)
 
     def close_popup():
@@ -39,13 +39,13 @@ if __name__ == '__main__':
         root.destroy()
 
     # Traditional menu
-    gui.create_menu({'Exit': exit_app}, name = 'File')
-    some_menu = gui.create_menu({'Item': hello}, name = 'Menu')
-    gui.create_menu({'Subitem': hello}, name = 'Submenu', parent = some_menu)
+    gui.create_menu({'Exit': exit_app}, name='File')
+    some_menu = gui.create_menu({'Item': hello}, name='Menu')
+    gui.create_menu({'Subitem': hello}, name='Submenu', parent=some_menu)
     gui.create_menu({'?': hello})
 
     # Popup menu
-    popup_menu = gui.create_menu({'Foo':open_popup, 'Bar':open_popup}, popup = True)
+    popup_menu = gui.create_menu({'Foo':open_popup, 'Bar':open_popup}, popup=True)
 
     def popup(event):
         popup_menu.post(event.x_root, event.y_root)

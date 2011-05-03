@@ -67,7 +67,7 @@ def generate_keys(p, q):
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
-    root = gui.initialize('rsa_ui.json', title = 'RSA example')
+    root = gui.initialize('rsa_ui.json', title='RSA example')
 
     p_entry = gui.find('pub')
     pr_entry = gui.find('priv')
@@ -86,25 +86,25 @@ if __name__ == '__main__':
         crypted = (msg ** e) % n
         original = crypted ** d % n
 
-        p_entry.config(state = 'normal')
+        p_entry.config(state='normal')
         p_entry.delete(0, END)
         p_entry.insert(END, repr(e) + ', ' + repr(n))
-        p_entry.config(state = 'disabled')
+        p_entry.config(state='disabled')
 
-        pr_entry.config(state = 'normal')
+        pr_entry.config(state='normal')
         pr_entry.delete(0, END)
         pr_entry.insert(END, repr(d) + ', ' + repr(n))
-        pr_entry.config(state = 'disabled')
+        pr_entry.config(state='disabled')
 
-        c_entry.config(state = 'normal')
+        c_entry.config(state='normal')
         c_entry.delete(0, END)
         c_entry.insert(END, crypted)
-        c_entry.config(state = 'disabled')
+        c_entry.config(state='disabled')
 
-        d_entry.config(state = 'normal')
+        d_entry.config(state='normal')
         d_entry.delete(0, END)
         d_entry.insert(END, original)
-        d_entry.config(state = 'disabled')
+        d_entry.config(state='disabled')
 
     p_v = gui.entry('p', focus=True)
     q_v = gui.entry('q')
