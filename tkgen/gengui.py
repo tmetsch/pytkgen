@@ -5,12 +5,12 @@
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -29,11 +29,13 @@ Created on Apr 21, 2011
 
 @author: tmetsch
 '''
+
+
 class Generator(object):
 
     menu = None
 
-    def initialize(self, filename, title = 'Tk'):
+    def initialize(self, filename, title='Tk'):
         """
         Initialize a Tk root and created the UI from a JSON file.
 
@@ -46,7 +48,7 @@ class Generator(object):
         ui = json.load(ui_file)
 
         self.create_widgets(self.root, ui)
-        
+
         return self.root
 
     def create_widgets(self, parent, items):
@@ -68,8 +70,8 @@ class Generator(object):
                 self.create_widgets(widget, current)
             elif isinstance(current, list):
                 for item in current:
-                    self.create_widgets(parent, {name:item})
-       
+                    self.create_widgets(parent, {name: item})
+
     def _contains_dict(self, items):
         """
         Checks if a set of items contains a dictionary.
@@ -82,7 +84,7 @@ class Generator(object):
                 result = True
                 break
         return result
-    
+
     def _contains_list(self, items):
         """
         Checks if a set of items contains a list.
@@ -95,7 +97,7 @@ class Generator(object):
                 # the .lower check ensures that I can have attribute lists
                 result = True
                 break
-        return result    
+        return result
 
     def _create_widget(self, name, parent, desc):
         """
@@ -108,7 +110,7 @@ class Generator(object):
         desc -- Dictionary containing the description for this widget.
         """
         row, column, columnspan, rowweight, colweight, options = self._get_options(desc)
-        
+
         try:
             widget_factory = getattr(Tkinter, name)
         except AttributeError:
@@ -120,12 +122,12 @@ class Generator(object):
 
         widget = widget_factory(parent, **options)
 
-        widget.grid(row = row,
-                    column = column,
-                    columnspan = columnspan,
-                    sticky = N + E + W + S,
-                    padx = 2,
-                    pady = 2)
+        widget.grid(row=row,
+                    column=column,
+                    columnspan=columnspan,
+                    sticky=N + E + W + S,
+                    padx=2,
+                    pady=2)
 
         # propaget size settings when needed.
         if 'width' in options or 'height' in options:
@@ -136,7 +138,7 @@ class Generator(object):
             parent.rowconfigure(row, weight=rowweight)
         if colweight > 0:
             parent.columnconfigure(column, weight=colweight)
-            
+
         return widget
 
     def _get_options(self, dictionary):
@@ -151,13 +153,13 @@ class Generator(object):
         colspan = 1
         rowweight = 0
         colweight = 0
-        
+
         if 'row' in dictionary:
             row = dictionary['row']
             dictionary.pop('row')
         if 'column' in dictionary:
             column = dictionary['column']
-            dictionary.pop('column') 
+            dictionary.pop('column')
         if 'columnspan' in dictionary:
             colspan = dictionary['columnspan']
             dictionary.pop('columnspan')
@@ -170,7 +172,7 @@ class Generator(object):
         if 'weight' in dictionary:
             colweight = dictionary['weight']
             rowweight = dictionary['weight']
-            dictionary.pop('weight')                
+            dictionary.pop('weight')
         for key in dictionary.keys():
             if not isinstance(dictionary[key], dict) and not isinstance(dictionary[key], list):
                 options[str(key)] = str(dictionary[key])
@@ -203,13 +205,13 @@ class Generator(object):
     ##
     # Rest is public use :-)
     ##
-    
+
     def button(self, name, cmd):
         """
         Associate a Tk widget with a function.
         """
         item = self._find_by_name(self.root, name)
-        item.config(command = cmd)
+        item.config(command=cmd)
 
     def checkbox(self, name):
         """
@@ -219,7 +221,7 @@ class Generator(object):
         """
         c = IntVar()
         item = self._find_by_name(self.root, name)
-        item.config(variable = c)
+        item.config(variable=c)
         return c
 
     def entry(self, name):
@@ -255,7 +257,7 @@ class Generator(object):
         dialog_def = json.load(ui_file)
         self.create_widgets(dialog, dialog_def)
         dialog.grid()
-        
+
     def notebook(self, parent, filename, name='Tab'):
         """
         Add a tab to a tkk notebook widget.
@@ -319,16 +321,16 @@ class Generator(object):
                 # Create a submenu.
                 tmp_menu = Tkinter.Menu(parent)
                 parent.add_cascade(label=name, menu=tmp_menu)
-                
+
             for key in commands:
                 tmp_menu.add_command(label=key, command=commands[key])
-                
+
             return tmp_menu
         elif popup is True and len(commands.keys()) > 0:
             tmp_menu = Tkinter.Menu(self.root)
             for key in commands:
                 tmp_menu.add_command(label=key, command=commands[key])
-                
+
             return tmp_menu
         else:
             raise AttributeError('Invalid parameters provided')
