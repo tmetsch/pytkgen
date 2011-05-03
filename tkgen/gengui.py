@@ -18,9 +18,9 @@
 
 from Tkconstants import W, E, N, S
 from Tkinter import Tk, IntVar, StringVar
-
-import json
 import Tkinter
+import json
+
 
 '''
 Simple class which wraps Tk and uses some JSON to contruct a GUI...
@@ -33,7 +33,7 @@ class Generator(object):
 
     menu = None
 
-    def initialize(self, filename, title = 'Tk'):
+    def initialize(self, filename, title='Tk'):
         """
         Initialize a Tk root and created the UI from a JSON file.
 
@@ -120,12 +120,12 @@ class Generator(object):
 
         widget = widget_factory(parent, **options)
 
-        widget.grid(row = row,
-                    column = column,
-                    columnspan = columnspan,
-                    sticky = N + E + W + S,
-                    padx = 2,
-                    pady = 2)
+        widget.grid(row=row,
+                    column=column,
+                    columnspan=columnspan,
+                    sticky=N + E + W + S,
+                    padx=2,
+                    pady=2)
 
         # propaget size settings when needed.
         if 'width' in options or 'height' in options:
@@ -133,9 +133,9 @@ class Generator(object):
 
         # set parent weight of the cells
         if rowweight > 0:
-            parent.rowconfigure(row, weight = rowweight)
+            parent.rowconfigure(row, weight=rowweight)
         if colweight > 0:
-            parent.columnconfigure(column, weight = colweight)
+            parent.columnconfigure(column, weight=colweight)
 
         return widget
 
@@ -213,7 +213,7 @@ class Generator(object):
         focus -- indicates wether this item has the focus.
         """
         item = self._find_by_name(self.root, name)
-        item.config(command = cmd)
+        item.config(command=cmd)
 
         if focus:
             item.focus_set()
@@ -227,14 +227,15 @@ class Generator(object):
         """
         c = IntVar()
         item = self._find_by_name(self.root, name)
-        item.config(variable = c)
+        item.config(variable=c)
 
         if focus:
             item.focus_set()
-        
+
         return c
 
     def entry(self, name, key=None, cmd=None, focus=False):
+
         """
         Returns the text of a TK widget.
 
@@ -246,14 +247,14 @@ class Generator(object):
         v = StringVar()
 
         item = self._find_by_name(self.root, name)
-        item.config(textvariable = v)
+        item.config(textvariable=v)
 
         if focus:
             item.focus_set()
-        
+
         if key is not None and cmd is not None:
             item.bind(key, cmd)
-        
+
         return v
 
     def label(self, name):
@@ -264,10 +265,10 @@ class Generator(object):
         """
         v = StringVar()
         item = self._find_by_name(self.root, name)
-        item.config(textvariable = v)
+        item.config(textvariable=v)
         return v
 
-    def toplevel(self, filename, title = 'Dialog'):
+    def toplevel(self, filename, title='Dialog'):
         """
         Open a Toplevel widget.
 
@@ -281,7 +282,7 @@ class Generator(object):
         self.create_widgets(dialog, dialog_def)
         dialog.grid()
 
-    def notebook(self, parent, filename, name = 'Tab'):
+    def notebook(self, parent, filename, name='Tab'):
         """
         Add a tab to a tkk notebook widget.
 
@@ -293,9 +294,9 @@ class Generator(object):
         ui_file = open(filename)
         tab1_def = json.load(ui_file)
         self.create_widgets(frame, tab1_def)
-        parent.add(frame, text = name)
+        parent.add(frame, text=name)
 
-    def treeview(self, treeview, name, values, parent = '', index = 0):
+    def treeview(self, treeview, name, values, parent='', index=0):
         """
         Adds an item to a treeview.
 
@@ -305,7 +306,7 @@ class Generator(object):
         parent -- Default will create root items, specify a parent to create a leaf.
         index -- If index < current # of items - insert at the top (Default: 0).
         """
-        return treeview.insert(parent, index, text = name, values = values)
+        return treeview.insert(parent, index, text=name, values=values)
 
     def find(self, name):
         """
@@ -316,7 +317,7 @@ class Generator(object):
             raise KeyError('Tkinter widget with name "' + name + '" not found.')
         return result
 
-    def create_menu(self, commands, name = None, parent = None, popup = False):
+    def create_menu(self, commands, name=None, parent=None, popup=False):
         """
         Creates a menu(entry) if non is available. Returns the created menu so you can define submenus.
 
@@ -328,31 +329,31 @@ class Generator(object):
         if self.menu is None and popup is False:
             # If no menu exists create one and add it to the Tk root.
             self.menu = Tkinter.Menu(self.root)
-            self.root.config(menu = self.menu)
+            self.root.config(menu=self.menu)
 
         if name is None and parent is None and popup is False and len(commands.keys()) > 0:
             # Just create a Menu entry.
             for key in commands:
-                self.menu.add_command(label = key, command = commands[key])
+                self.menu.add_command(label=key, command=commands[key])
             return self.menu
         elif name is not None and popup is False and len(commands.keys()) > 0:
             if parent is None:
                 # Create a top-level drop down menu.
                 tmp_menu = Tkinter.Menu(self.menu)
-                self.menu.add_cascade(label = name, menu = tmp_menu)
+                self.menu.add_cascade(label=name, menu=tmp_menu)
             else:
                 # Create a submenu.
                 tmp_menu = Tkinter.Menu(parent)
-                parent.add_cascade(label = name, menu = tmp_menu)
+                parent.add_cascade(label=name, menu=tmp_menu)
 
             for key in commands:
-                tmp_menu.add_command(label = key, command = commands[key])
+                tmp_menu.add_command(label=key, command=commands[key])
 
             return tmp_menu
         elif popup is True and len(commands.keys()) > 0:
             tmp_menu = Tkinter.Menu(self.root)
             for key in commands:
-                tmp_menu.add_command(label = key, command = commands[key])
+                tmp_menu.add_command(label=key, command=commands[key])
 
             return tmp_menu
         else:

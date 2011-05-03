@@ -22,13 +22,13 @@ import tkgen.gengui
 
 if __name__ == '__main__':
     gui = tkgen.gengui.Generator()
-    root = gui.initialize('example.json', title = 'Some test gui...')
+    root = gui.initialize('example.json', title='Some test gui...')
 
     def ok(event=None):
         print v.get()
         print c.get()
         root.destroy()
-        
+
     # config vars for checkboxes etc.
     c = gui.checkbox('check')
     v = gui.entry('entry', key='<Return>', cmd=ok, focus=True)
