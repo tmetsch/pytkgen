@@ -206,32 +206,57 @@ class Generator(object):
     # Rest is public use :-)
     ##
 
-    def button(self, name, cmd):
+    def button(self, name, cmd, focus=False):
         """
         Associate a Tk widget with a function.
+
+        name -- Name of the widget.
+        cmd -- The command to trigger.
+        focus -- indicates wether this item has the focus.
         """
         item = self._find_by_name(self.root, name)
         item.config(command=cmd)
 
-    def checkbox(self, name):
+        if focus:
+            item.focus_set()
+
+    def checkbox(self, name, focus=False):
         """
         Associates a IntVar with a checkbox.
 
         name -- Name of the Checkbox.
+        focus -- indicates wether this item has the focus.
         """
         c = IntVar()
         item = self._find_by_name(self.root, name)
-        item.config(variable=c)
+        item.config(variable = c)
+
+        if focus:
+            item.focus_set()
+        
         return c
 
-    def entry(self, name):
+    def entry(self, name, key=None, cmd=None, focus=False):
         """
         Returns the text of a TK widget.
 
         name -- Name of the Tk widget.
+        key -- Needed if a key should be bound to this instance.
+        cmd -- If key is defined cmd needs to be defined - will be triggered when the key is pressed.
+        focus -- Indicates wether this entry should take focus.
         """
+        v = StringVar()
+
         item = self._find_by_name(self.root, name)
-        return item.get()
+        item.config(textvariable = v)
+
+        if focus:
+            item.focus_set()
+        
+        if key is not None and cmd is not None:
+            item.bind(key, cmd)
+        
+        return v
 
     def label(self, name):
         """

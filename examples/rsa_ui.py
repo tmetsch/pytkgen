@@ -74,10 +74,10 @@ if __name__ == '__main__':
     c_entry = gui.find('c_msg')
     d_entry = gui.find('d_msg')
 
-    def ok():
-        p = long(gui.entry('p'))
-        q = long(gui.entry('q'))
-        msg = long(gui.entry('msg'))
+    def ok(event=None):
+        p = long(p_v.get())
+        q = long(q_v.get())
+        msg = long(m_v.get())
 
         pub_key, priv_key = generate_keys(p, q)
 
@@ -105,6 +105,10 @@ if __name__ == '__main__':
         d_entry.delete(0, END)
         d_entry.insert(END, original)
         d_entry.config(state = 'disabled')
+
+    p_v = gui.entry('p', focus=True)
+    q_v = gui.entry('q')
+    m_v = gui.entry('msg', key='<Return>', cmd=ok)
 
     # add button behaviour
     gui.button('ok', ok)
