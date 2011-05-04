@@ -30,28 +30,30 @@ import Tkinter
 import json
 
 
-class Generator(object):
+class TkJson(Tk):
     """
     Simple class which wraps Tk and uses some JSON to contruct a GUI.
     """
 
     menu = None
+    widgets = {}
 
-    def initialize(self, filename, title='Tk'):
+    def __init__(self, filename, title='Tk'):
         """
         Initialize a Tk root and created the UI from a JSON file.
 
         Returns the Tk root.
         """
-        self.root = Tk()
-        self.root.title(title)
+        # Needs to be done this way - because base class do not derive from
+        # object :-(
+        Tk.__init__(self)
+
+        self.title(title)
 
         ui_file = open(filename)
         user_interface = json.load(ui_file)
 
-        self.create_widgets(self.root, user_interface)
-
-        return self.root
+        self.create_widgets(self, user_interface)
 
     def create_widgets(self, parent, items):
         """
@@ -146,6 +148,8 @@ class Generator(object):
         if c_weight > 0:
             parent.columnconfigure(column, weight=c_weight)
 
+        self.widgets[widget._name] = widget
+
         return widget
 
     def _get_options(self, dictionary):
@@ -190,26 +194,6 @@ class Generator(object):
 
         return row, column, colspan, rowweight, colweight, options
 
-    def _find_by_name(self, parent, name):
-        """
-        Recursively find a item by name.
-
-        Needs to be recursive because of frames in frames in frames in ... :-)
-        """
-        items = parent.children
-        result = None
-        if name in items.keys():
-            return items[name]
-        else:
-            for key in items.keys():
-                if hasattr(items[key],
-                           'children') and len(items[key].children) > 0:
-                    result = self._find_by_name(items[key], name)
-                    if result is not None:
-                        break
-
-        return result
-
     ##
     # Rest is public use :-)
     ##
@@ -222,7 +206,7 @@ class Generator(object):
         cmd -- The command to trigger.
         focus -- indicates wether this item has the focus.
         """
-        item = self._find_by_name(self.root, name)
+        item = self.get(name)
         item.config(command=cmd)
 
         if focus:
@@ -236,7 +220,7 @@ class Generator(object):
         focus -- indicates wether this item has the focus.
         """
         var = IntVar()
-        item = self._find_by_name(self.root, name)
+        item = self.get(name)
         item.config(variable=var)
 
         if focus:
@@ -256,7 +240,7 @@ class Generator(object):
         """
         var = StringVar()
 
-        item = self._find_by_name(self.root, name)
+        item = self.get(name)
         item.config(textvariable=var)
 
         if focus:
@@ -274,33 +258,18 @@ class Generator(object):
         name -- Name of the Label.
         """
         var = StringVar()
-        item = self._find_by_name(self.root, name)
+        item = self.get(name)
         item.config(textvariable=var)
         return var
 
-    def toplevel(self, filename, title='Dialog'):
-        """
-        Open a Toplevel widget.
-
-        parent -- The parent notebook widget instance.
-        title -- The title for the dialog.
-        """
-        dialog = Tkinter.Toplevel()
-        dialog.title(title)
-        ui_file = open(filename)
-        dialog_def = json.load(ui_file)
-        self.create_widgets(dialog, dialog_def)
-        dialog.grid()
-
-    def find(self, name):
+    def get(self, name):
         """
         Find a Tk widget by name and return it.
         """
-        result = self._find_by_name(self.root, name)
-        if result is None:
-            raise KeyError('Tkinter widget with name "' +
-                           name + '" not found.')
-        return result
+        if name in self.widgets.keys():
+            return self.widgets[name]
+        else:
+            raise KeyError('Widget with the name ' + name + ' not found.')
 
     def create_menu(self, commands, name=None, parent=None, popup=False):
         """
@@ -314,8 +283,8 @@ class Generator(object):
         """
         if self.menu is None and popup is False:
             # If no menu exists create one and add it to the Tk root.
-            self.menu = Tkinter.Menu(self.root)
-            self.root.config(menu=self.menu)
+            self.menu = Tkinter.Menu(self, tearoff=0)
+            self.config(menu=self.menu)
 
         if name is None and parent is None and popup is False and len(commands.keys()) > 0:
             # Just create a Menu entry.
@@ -325,11 +294,11 @@ class Generator(object):
         elif name is not None and popup is False and len(commands.keys()) > 0:
             if parent is None:
                 # Create a top-level drop down menu.
-                tmp_menu = Tkinter.Menu(self.menu)
+                tmp_menu = Tkinter.Menu(self.menu, tearoff=0)
                 self.menu.add_cascade(label=name, menu=tmp_menu)
             else:
                 # Create a submenu.
-                tmp_menu = Tkinter.Menu(parent)
+                tmp_menu = Tkinter.Menu(parent, tearoff=0)
                 parent.add_cascade(label=name, menu=tmp_menu)
 
             for key in commands:
@@ -337,7 +306,7 @@ class Generator(object):
 
             return tmp_menu
         elif popup is True and len(commands.keys()) > 0:
-            tmp_menu = Tkinter.Menu(self.root)
+            tmp_menu = Tkinter.Menu(self, tearoff=0)
             for key in commands:
                 tmp_menu.add_command(label=key, command=commands[key])
 
@@ -346,6 +315,17 @@ class Generator(object):
             raise AttributeError('Invalid parameters provided')
 
     # Move?
+
+    def create_from_file(self, parent, filename):
+        """
+        Create a set of widgets and add them to the given parent.
+
+        parent -- The parent of the to be created widgets.
+        filename -- The JSON definition file.
+        """
+        ui_file = open(filename)
+        definition = json.load(ui_file)
+        self.create_widgets(parent, definition)
 
     def notebook(self, parent, filename, name='Tab'):
         """
@@ -356,10 +336,20 @@ class Generator(object):
         name -- The name of the tab.
         """
         frame = Tkinter.Frame()
-        ui_file = open(filename)
-        tab1_def = json.load(ui_file)
-        self.create_widgets(frame, tab1_def)
+        self.create_from_file(frame, filename)
         parent.add(frame, text=name)
+
+    def toplevel(self, filename, title='Dialog'):
+        """
+        Open a Toplevel widget.
+
+        parent -- The parent notebook widget instance.
+        title -- The title for the dialog.
+        """
+        dialog = Tkinter.Toplevel()
+        dialog.title(title)
+        self.create_from_file(dialog, filename)
+        dialog.grid()
 
     def treeview(self, treeview, name, values, parent='', index=0):
         """

@@ -21,20 +21,19 @@
 import tkgen.gengui
 
 if __name__ == '__main__':
-    gui = tkgen.gengui.Generator()
-    root = gui.initialize('example.json', title='Some test gui...')
-
+    root = tkgen.gengui.TkJson('example.json', title='Some test gui...')
+    
     def ok(event=None):
         print v.get()
         print c.get()
         root.destroy()
 
     # config vars for checkboxes etc.
-    c = gui.checkbox('check')
-    v = gui.entry('entry', key='<Return>', cmd=ok, focus=True)
+    c = root.checkbox('check')
+    v = root.entry('entry', key='<Return>', cmd=ok, focus=True)
 
     # add button behaviour
-    gui.button('ok', ok)
-    gui.button('cancel', root.destroy)
+    root.button('ok', ok)
+    root.button('cancel', root.destroy)
 
     root.mainloop()

@@ -26,33 +26,32 @@ if __name__ == '__main__':
     def exit_app():
         root.destroy()
 
-    gui = tkgen.gengui.Generator()
-    root = gui.initialize('example_ttk.json', title='Some test gui...')
+    root = tkgen.gengui.TkJson('example_ttk.json', title='Some test gui...')
 
     # add tabs to the notebook
-    notebook = gui.find('notebook')
-    gui.notebook(notebook, 'example_ttk_notebook_tab_1.json', name='Tab 1')
-    gui.notebook(notebook, 'example_ttk_notebook_tab_2.json', name='Tab 2')
+    notebook = root.get('notebook')
+    root.notebook(notebook, 'example_ttk_notebook_tab_1.json', name='Tab 1')
+    root.notebook(notebook, 'example_ttk_notebook_tab_2.json', name='Tab 2')
 
     # alter an entry in a notebook tab
-    text = gui.label('foo')
+    text = root.label('foo')
     text.set('The second Tab has a Treeview in it...')
 
     # progressbar
-    progressbar = gui.find('progressbar')
+    progressbar = root.get('progressbar')
     progressbar.start()
 
     # treeview interaction
-    treeview = gui.find('treeview')
+    treeview = root.get('treeview')
     treeview.heading('#0', text='1')
     treeview.heading('0', text='2')
     treeview.heading('1', text='3')
 
-    item = gui.treeview(treeview, 'item', ['foo', 'bar'])
-    leaf = gui.treeview(treeview, 'leafitem', ['foo', 'bar'], parent=item)
-    gui.treeview(treeview, 'first_item', ['foo', 'bar'], index=0)
+    item = root.treeview(treeview, 'item', ['foo', 'bar'])
+    leaf = root.treeview(treeview, 'leafitem', ['foo', 'bar'], parent=item)
+    root.treeview(treeview, 'first_item', ['foo', 'bar'], index=0)
 
     # menu
-    gui.create_menu({'Exit': exit_app}, name='File')
+    root.create_menu({'Exit': exit_app}, name='File')
 
     root.mainloop()

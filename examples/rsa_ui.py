@@ -66,13 +66,12 @@ def generate_keys(p, q):
     return [(e, n), (d, n)]
 
 if __name__ == '__main__':
-    gui = tkgen.gengui.Generator()
-    root = gui.initialize('rsa_ui.json', title='RSA example')
+    root = tkgen.gengui.TkJson('rsa_ui.json', title='RSA example')
 
-    p_entry = gui.find('pub')
-    pr_entry = gui.find('priv')
-    c_entry = gui.find('c_msg')
-    d_entry = gui.find('d_msg')
+    p_entry = root.get('pub')
+    pr_entry = root.get('priv')
+    c_entry = root.get('c_msg')
+    d_entry = root.get('d_msg')
 
     def ok(event=None):
         p = long(p_v.get())
@@ -106,12 +105,12 @@ if __name__ == '__main__':
         d_entry.insert(END, original)
         d_entry.config(state='disabled')
 
-    p_v = gui.entry('p', focus=True)
-    q_v = gui.entry('q')
-    m_v = gui.entry('msg', key='<Return>', cmd=ok)
+    p_v = root.entry('p', focus=True)
+    q_v = root.entry('q')
+    m_v = root.entry('msg', key='<Return>', cmd=ok)
 
     # add button behaviour
-    gui.button('ok', ok)
-    gui.button('exit', root.destroy)
+    root.button('ok', ok)
+    root.button('exit', root.destroy)
 
     root.mainloop()
