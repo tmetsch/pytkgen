@@ -9,8 +9,7 @@ able to parse these files and return you a Tk root.
 
 To use a JSON file as input:
 
-    gui = tkgen.gengui.Generator()
-    root = gui.initialize('ui.json', title = 'Some test gui...')
+    root = tkgen.gengui.TkJson('ui.json', title = 'Some test gui...')
     root.mainloop()
 
 Please see the examples in the 'examples/' directory for more details on how to
@@ -28,37 +27,44 @@ So since the GUI itself is defined in a JSON file you need to lookup the
 widgets in your python code to do actual operations on them. The gengui module
 offers some routines which will make your life easy:
 
-  * find(name) - Returns the Tkinter widget object of the widget with the given
+  * get(name) - Returns the Tkinter widget object of the widget with the given
     name. Requires that a name was indeed defined in the definition file for
     this widget. Now that you have the object for an Tkinter widget you can do
     everything which is defined for this particular widget with it using known
     techniques.
     
-  * button(name, cmd) - Associates a 'Button' widget with a command - For
+  * button(name, cmd, [...]) - Associates a 'Button' widget with a command - For
     example: 'root.destroy'.
     
-  * checkbox(name) - Returns an 'IntVar' for a 'Checkbox' so you can retrieve
-    the value (0/1) to see if the User checked the box or not.
+  * checkbox(name, [...]) - Returns an 'IntVar' for a 'Checkbox' so you can
+    retrieve the value (0/1) to see if the User checked the box or not.
     
-  * entry(name) - Returns the text of an 'Entry' widget.
+  * entry(name, [...]) - Returns a 'StringVar' for a Entry so you can retrieve
+    and set the value of a Entry widget.
   
-  * notebook(notebook, 'tab.json', name='Tab 1') - Adds a tab to a tkk Notebook
-    widget which is itself defined by a JSON file.
+  * label(name) - Returns a 'StringVar' for a Label so you can retrieve and set
+    the value of a Label widget.
   
-  * item = gui.treeview(treeview, 'item', ['foo', 'bar']) - Adds an entry to a
-    Treeview widget and returns it.
+  * create_from_file([...]) - Create a set of widgets from a file and add them
+    to a given parent widget.
   
-  * create_menu({'Help':open_help_dialog}) - Create a new menu entry in the Tk
-    root's menu.
-    
-  * filemenu = gui.create_menu({'Exit': exit}, name='File') - Create a new
-    drop-down File menu and add an Exit command to it.
-    
-  * gui.create_menu({'foo': ok}, name='Sub', parent=filemenu) - Create a submenu
-    in the filemenu.
+  * notebook([...]) - Adds a tab to a tkk Notebook widget which is itself
+    defined by a JSON file.
+  
+  * treeview([...]) - Adds a item to a given treeview.
+  
+  * toplevel([...]) - Creates a toplevel dialog from a JSON definition file.
+
+  * create_menu([...]) - Create new menus, popup menus or submenus on the fly.
 
 Changelog
 ---------
+
+1.3
+
+  * Code optimizations
+  * Support for setting the focus of a widget
+  * More 'supporting routines'
 
 1.2
 
