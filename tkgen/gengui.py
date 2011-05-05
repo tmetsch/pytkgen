@@ -117,7 +117,7 @@ class TkJson(Tk):
         parent -- The parent widget.
         desc -- Dictionary containing the description for this widget.
         """
-        row, column, c_span, r_weight, c_weight, opt = self._get_options(desc)
+        position, weight, padding, opt = self._get_options(desc)
 
         try:
             widget_factory = getattr(Tkinter, name)
@@ -131,22 +131,23 @@ class TkJson(Tk):
 
         widget = widget_factory(parent, **opt)
 
-        widget.grid(row=row,
-                    column=column,
-                    columnspan=c_span,
+        widget.grid(row=position[0],
+                    column=position[1],
+                    columnspan=weight[0],
+                    rowspan=weight[1],
                     sticky=N + E + W + S,
-                    padx=2,
-                    pady=2)
+                    padx=padding[0],
+                    pady=padding[1])
 
         # propaget size settings when needed.
         if 'width' in opt or 'height' in opt:
             widget.grid_propagate(0)
 
         # set parent weight of the cells
-        if r_weight > 0:
-            parent.rowconfigure(row, weight=r_weight)
-        if c_weight > 0:
-            parent.columnconfigure(column, weight=c_weight)
+        if weight[2] > 0:
+            parent.rowconfigure(position[0], weight=weight[2])
+        if weight[3] > 0:
+            parent.columnconfigure(position[1], weight=weight[3])
 
         self.widgets[widget._name] = widget
 
@@ -159,11 +160,17 @@ class TkJson(Tk):
         dictionary -- Dictionary with all the options in it.
         """
         options = {}
+
         row = 0
         column = 0
+
         colspan = 1
+        rowspan = 1
         rowweight = 0
         colweight = 0
+
+        padx = 2
+        pady = 2
 
         if 'row' in dictionary:
             row = dictionary['row']
@@ -171,9 +178,13 @@ class TkJson(Tk):
         if 'column' in dictionary:
             column = dictionary['column']
             dictionary.pop('column')
+            
         if 'columnspan' in dictionary:
             colspan = dictionary['columnspan']
             dictionary.pop('columnspan')
+        if 'rowspan' in dictionary:
+            rowspan = dictionary['rowspan']
+            dictionary.pop('rowspan')            
         if 'rowweight' in dictionary:
             rowweight = dictionary['rowweight']
             dictionary.pop('rowweight')
@@ -184,15 +195,23 @@ class TkJson(Tk):
             colweight = dictionary['weight']
             rowweight = dictionary['weight']
             dictionary.pop('weight')
+
+        if 'padx' in dictionary:
+            padx = dictionary['padx']
+            dictionary.pop('padx')
+        if 'pady' in dictionary:
+            pady = dictionary['pady']
+            dictionary.pop('pady')
+            
         for key in dictionary.keys():
             if not isinstance(dictionary[key],
                               dict) and not isinstance(dictionary[key], list):
                 options[str(key)] = str(dictionary[key])
             elif isinstance(dictionary[key], list) and key == key.lower():
                 # so we have an attribute list...
-                options[str(key)] = str(dictionary[key])
+                options[str(key)] = dictionary[key]
 
-        return row, column, colspan, rowweight, colweight, options
+        return [row, column], [colspan, rowspan, rowweight, colweight], [padx, pady], options
 
     ##
     # Rest is public use :-)
@@ -270,6 +289,32 @@ class TkJson(Tk):
             return self.widgets[name]
         else:
             raise KeyError('Widget with the name ' + name + ' not found.')
+
+    def xscroll(self, widget_name, scrollbar_name):
+        """
+        Add a horizontal scrollbar to a widget.
+
+        widget_name -- name of the widget.
+        scollbar_name -- name of the scrollbar.
+        """
+        widget = self.get(widget_name)
+        scrollbar = self.get(scrollbar_name)
+        
+        widget.config(xscrollcommand=scrollbar.set)
+        scrollbar.config(command=widget.xview)
+
+    def yscroll(self, widget_name, scrollbar_name):
+        """
+        Add a vertical scrollbar to a widget.
+
+        widget_name -- name of the widget.
+        scollbar_name -- name of the scrollbar.
+        """
+        widget = self.get(widget_name)
+        scrollbar = self.get(scrollbar_name)
+        
+        widget.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=widget.yview)
 
     def create_menu(self, commands, name=None, parent=None, popup=False):
         """
