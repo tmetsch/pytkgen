@@ -395,6 +395,7 @@ class TkJson(Tk):
         dialog.title(title)
         self.create_from_file(dialog, filename)
         dialog.grid()
+        return dialog
 
     def treeview(self, treeview, name, values, parent='', index=0):
         """
