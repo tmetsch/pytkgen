@@ -57,8 +57,36 @@ offers some routines which will make your life easy:
 
   * create_menu([...]) - Create new menus, popup menus or submenus on the fly.
 
+  * xscroll and yscroll([...]) - Adds a Horinzontal/Vertical Scrollbar to a 
+    widget.
+
+Supported Attributes for Grid placement
+---------------------------------------
+
+On top of all attributes supported by a widget, the following attributes can be
+used in the JSON files to refine the placement of widgets in the Grid Geometry
+Manager:
+
+  * row, column - Define the row and column in which the widget should appear 
+    (default: 0).
+
+  * rowspan, columnspan - Define if the widget should span across multiple rows
+    or columns (default: 1).
+
+  * rowweight, colweight, weight - Define the weight for a row or column or
+    both (weight). If the weight is set the parent rows/columns are configured
+    automatically to take care of the resizing. (default: 0).
+
+  * padx, pady - X,Y padding for the widget (default: 2px).
+
+  * sticky - Defines the sticky attribute as string (default: 'news').
+
 Changelog
 ---------
+
+1.4
+
+  * Support for sticky attribute in the JSON file
 
 1.3
 

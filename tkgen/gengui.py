@@ -24,7 +24,6 @@ Created on Apr 21, 2011
 @author: tmetsch
 """
 
-from Tkconstants import W, E, N, S
 from Tkinter import Tk, IntVar, StringVar
 import Tkinter
 import json
@@ -131,13 +130,13 @@ class TkJson(Tk):
 
         widget = widget_factory(parent, **opt)
 
-        widget.grid(row=position[0],
-                    column=position[1],
-                    columnspan=weight[0],
-                    rowspan=weight[1],
-                    sticky=N + E + W + S,
-                    padx=padding[0],
-                    pady=padding[1])
+        widget.grid(row = position[0],
+                    column = position[1],
+                    columnspan = weight[0],
+                    rowspan = weight[1],
+                    sticky = padding[2],
+                    padx = padding[0],
+                    pady = padding[1])
 
         # propaget size settings when needed.
         if 'width' in opt or 'height' in opt:
@@ -172,6 +171,8 @@ class TkJson(Tk):
         padx = 2
         pady = 2
 
+        sticky = 'news'
+
         if 'row' in dictionary:
             row = dictionary['row']
             dictionary.pop('row')
@@ -202,6 +203,9 @@ class TkJson(Tk):
         if 'pady' in dictionary:
             pady = dictionary['pady']
             dictionary.pop('pady')
+        if 'sticky' in dictionary:
+            sticky = dictionary['sticky']
+            dictionary.pop('sticky')
             
         for key in dictionary.keys():
             if not isinstance(dictionary[key],
@@ -211,7 +215,7 @@ class TkJson(Tk):
                 # so we have an attribute list...
                 options[str(key)] = dictionary[key]
 
-        return [row, column], [colspan, rowspan, rowweight, colweight], [padx, pady], options
+        return [row, column], [colspan, rowspan, rowweight, colweight], [padx, pady, sticky], options
 
     ##
     # Rest is public use :-)
