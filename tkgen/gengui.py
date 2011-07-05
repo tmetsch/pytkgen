@@ -29,6 +29,35 @@ import Tkinter
 import json
 
 
+def _contains_dict(items):
+    """
+    Checks if a set of items contains a dictionary.
+
+    items -- The set of items to test.
+    """
+    result = False
+    for item in items.keys():
+        if isinstance(items[item], dict):
+            result = True
+            break
+    return result
+
+
+def _contains_list(items):
+    """
+    Checks if a set of items contains a list.
+
+    items -- The set of items to test.
+    """
+    result = False
+    for item in items.keys():
+        if isinstance(items[item], list) and item is not item.lower():
+            # the .lower check ensures that I can have attribute lists
+            result = True
+            break
+    return result
+
+
 class TkJson(Tk):
     """
     Simple class which wraps Tk and uses some JSON to contruct a GUI.
@@ -61,50 +90,21 @@ class TkJson(Tk):
         for name in items.keys():
             current = items[name]
             if isinstance(current,
-                          dict) and not self._contains_list(
-                              current) and not self._contains_dict(current):
+                          dict) and not _contains_list(
+                              current) and not _contains_dict(current):
                 self._create_widget(name, parent, current)
 
-            elif isinstance(current, dict) and self._contains_list(current):
+            elif isinstance(current, dict) and _contains_list(current):
                 widget = self._create_widget(name, parent, current)
 
                 self.create_widgets(widget, current)
-            elif isinstance(current, dict) and self._contains_dict(current):
+            elif isinstance(current, dict) and _contains_dict(current):
                 widget = self._create_widget(name, parent, current)
 
                 self.create_widgets(widget, current)
             elif isinstance(current, list):
                 for item in current:
                     self.create_widgets(parent, {name: item})
-
-    # pylint: disable-msg=W0142,R0201
-
-    def _contains_dict(self, items):
-        """
-        Checks if a set of items contains a dictionary.
-
-        items -- The set of items to test.
-        """
-        result = False
-        for item in items.keys():
-            if isinstance(items[item], dict):
-                result = True
-                break
-        return result
-
-    def _contains_list(self, items):
-        """
-        Checks if a set of items contains a list.
-
-        items -- The set of items to test.
-        """
-        result = False
-        for item in items.keys():
-            if isinstance(items[item], list) and item is not item.lower():
-                # the .lower check ensures that I can have attribute lists
-                result = True
-                break
-        return result
 
     def _create_widget(self, name, parent, desc):
         """
@@ -130,13 +130,13 @@ class TkJson(Tk):
 
         widget = widget_factory(parent, **opt)
 
-        widget.grid(row = position[0],
-                    column = position[1],
-                    columnspan = weight[0],
-                    rowspan = weight[1],
-                    sticky = padding[2],
-                    padx = padding[0],
-                    pady = padding[1])
+        widget.grid(row=position[0],
+                    column=position[1],
+                    columnspan=weight[0],
+                    rowspan=weight[1],
+                    sticky=padding[2],
+                    padx=padding[0],
+                    pady=padding[1])
 
         # propaget size settings when needed.
         if 'width' in opt or 'height' in opt:
@@ -179,13 +179,13 @@ class TkJson(Tk):
         if 'column' in dictionary:
             column = dictionary['column']
             dictionary.pop('column')
-            
+
         if 'columnspan' in dictionary:
             colspan = dictionary['columnspan']
             dictionary.pop('columnspan')
         if 'rowspan' in dictionary:
             rowspan = dictionary['rowspan']
-            dictionary.pop('rowspan')            
+            dictionary.pop('rowspan')
         if 'rowweight' in dictionary:
             rowweight = dictionary['rowweight']
             dictionary.pop('rowweight')
@@ -206,7 +206,7 @@ class TkJson(Tk):
         if 'sticky' in dictionary:
             sticky = dictionary['sticky']
             dictionary.pop('sticky')
-            
+
         for key in dictionary.keys():
             if not isinstance(dictionary[key],
                               dict) and not isinstance(dictionary[key], list):
@@ -303,7 +303,7 @@ class TkJson(Tk):
         """
         widget = self.get(widget_name)
         scrollbar = self.get(scrollbar_name)
-        
+
         widget.config(xscrollcommand=scrollbar.set)
         scrollbar.config(command=widget.xview)
 
@@ -316,7 +316,7 @@ class TkJson(Tk):
         """
         widget = self.get(widget_name)
         scrollbar = self.get(scrollbar_name)
-        
+
         widget.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=widget.yview)
 

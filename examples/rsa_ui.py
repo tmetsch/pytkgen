@@ -7,12 +7,12 @@
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -20,6 +20,7 @@
 
 from Tkconstants import END
 import tkgen.gengui
+
 
 def euclid(a, b):
     """
@@ -31,6 +32,7 @@ def euclid(a, b):
     else:
         return euclid(b, a % b)
 
+
 def extended_euclid(a, b):
     """
     Extended Euclid
@@ -41,6 +43,7 @@ def extended_euclid(a, b):
         previous_d, previous_x, previous_y = extended_euclid(b, a % b)
         d, x, y = (previous_d, previous_y, previous_x - a // b * previous_y)
         return [d, x, y]
+
 
 def generate_keys(p, q):
     """
@@ -64,6 +67,7 @@ def generate_keys(p, q):
         d = y % m
 
     return [(e, n), (d, n)]
+
 
 if __name__ == '__main__':
     root = tkgen.gengui.TkJson('rsa_ui.json', title='RSA example')
