@@ -26,6 +26,7 @@ Created on Apr 21, 2011
 
 from Tkinter import Tk, IntVar, StringVar
 import Tkinter
+import ttk
 import json
 
 
@@ -66,7 +67,7 @@ class TkJson(Tk):
     menu = None
     widgets = {}
 
-    def __init__(self, filename, title='Tk'):
+    def __init__(self, filename, title='Tk', preferTk=True):
         """
         Initialize a Tk root and created the UI from a JSON file.
 
@@ -75,7 +76,7 @@ class TkJson(Tk):
         # Needs to be done this way - because base class do not derive from
         # object :-(
         Tk.__init__(self)
-
+        self.preferTk=preferTk
         self.title(title)
 
         ui_file = open(filename)
@@ -119,11 +120,10 @@ class TkJson(Tk):
         position, weight, padding, opt = self._get_options(desc)
 
         try:
-            widget_factory = getattr(Tkinter, name)
+            widget_factory = getattr(Tkinter, name) if self.preferTk else getattr(ttk, name)
         except AttributeError:
             try:
-                import ttk
-                widget_factory = getattr(ttk, name)
+                widget_factory = getattr(ttk, name) if not self.preferTk else getattr(Tkinter, name)
             except AttributeError:
                 raise AttributeError('Neither Tkinter nor ttk have a' +
                                      ' widget named: ', name)
