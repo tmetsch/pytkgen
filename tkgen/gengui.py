@@ -24,10 +24,11 @@ Created on Apr 21, 2011
 @author: tmetsch
 """
 
-from Tkinter import Tk, IntVar, StringVar
-import Tkinter
+from tkinter import Tk, IntVar, StringVar
+import tkinter
 import ttk
-import json,os
+import json
+import os
 
 
 def _contains_dict(items):
@@ -76,10 +77,11 @@ class TkJson(Tk):
         # Needs to be done this way - because base class do not derive from
         # object :-(
         Tk.__init__(self)
-        self.preferTk=preferTk
+        self.preferTk = preferTk
         self.title(title)
-        
-        user_interface = json.load(open(filename)) if os.path.isfile(filename) else json.loads(filename)
+
+        user_interface = json.load(open(filename)) if os.path.isfile(
+            filename) else json.loads(filename)
 
         self.create_widgets(self, user_interface)
 
@@ -96,12 +98,14 @@ class TkJson(Tk):
 
             elif isinstance(current, dict) and _contains_list(current):
                 widget = self._create_widget(name, parent, current)
-                if not widget: break
+                if not widget:
+                    break
 
                 self.create_widgets(widget, current)
             elif isinstance(current, dict) and _contains_dict(current):
                 widget = self._create_widget(name, parent, current)
-                if not widget: break
+                if not widget:
+                    break
 
                 self.create_widgets(widget, current)
             elif isinstance(current, list):
@@ -121,26 +125,30 @@ class TkJson(Tk):
         position, weight, padding, opt = self._get_options(desc)
 
         try:
-            widget_factory = getattr(Tkinter, name) if self.preferTk else getattr(ttk, name)
+            widget_factory = getattr(
+                Tkinter, name) if self.preferTk else getattr(ttk, name)
         except AttributeError:
             import traceback
             traceback.print_exc()
             try:
-                widget_factory = getattr(ttk, name) if self.preferTk else getattr(Tkinter, name)
+                widget_factory = getattr(
+                    ttk, name) if self.preferTk else getattr(Tkinter, name)
             except AttributeError as e:
                 import traceback
                 traceback.print_exc()
-                raise AttributeError('Neither Tkinter nor ttk have a widget named: ', name)
+                raise AttributeError(
+                    'Neither Tkinter nor ttk have a widget named: ', name)
 
         while True:
-         try:
-          widget = widget_factory(parent, **opt)
-          break
-         except Exception as e:
-          print e
-          if len(opt)==0: break
-          del opt[str(e).split()[2][2:-1]]
-          # widget = widget_factory(parent,**opt)
+            try:
+                widget = widget_factory(parent, **opt)
+                break
+            except Exception as e:
+                print e
+                if len(opt) == 0:
+                    break
+                del opt[str(e).split()[2][2:-1]]
+                # widget = widget_factory(parent,**opt)
 
         widget.grid(row=position[0],
                     column=position[1],
@@ -264,7 +272,6 @@ class TkJson(Tk):
         return var
 
     def entry(self, name, key=None, cmd=None, focus=False):
-
         """
         Returns the text of a TK widget.
 
