@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python3
 
 #
 # Copyright (c) 2011. All rights reserved.
@@ -24,8 +24,8 @@ if __name__ == '__main__':
     root = tkgen.gengui.TkJson('example.json', title='Some test gui...')
 
     def ok(event=None):
-        print v.get()
-        print c.get()
+        print(v.get())
+        print(c.get())
         root.destroy()
 
     # config vars for checkboxes etc.

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python3
 
 #
 # Copyright (c) 2011. All rights reserved.
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     root = tkgen.gengui.TkJson('example_menu.json', title='Some test gui...')
 
     def hello():
-        print 'Hello world'
+        print('Hello world')
 
     def open_popup():
         root.toplevel('example_menu_dialog.json', title='A dialog')
