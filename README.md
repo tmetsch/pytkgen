@@ -86,7 +86,8 @@ Changelog
 
 1.5
 
-  * Merged several cool contribs (e.g. ttk/tk preference) from community
+  * Merged several cool contribs (e.g. ttk/tk preference & cleanups) from
+    community
   * enabled it to work with python 2.* and 3.*
 
 1.4
