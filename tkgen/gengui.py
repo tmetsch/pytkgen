@@ -32,9 +32,11 @@ except ImportError:
     import Tkinter as tkinter
 
 try:
+    # python 3
     from tkinter import ttk
 except ImportError:
-    ttk = None
+    # python 2
+    import ttk
 
 import json
 import os
