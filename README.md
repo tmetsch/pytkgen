@@ -111,4 +111,4 @@ Changelog
 Feel free to play around with this - I do not guarantee that it is perfect nor
 complete - Have Fun!
 
-(c) 2011 tmetsch
+(c) 2011-2016 tmetsch
