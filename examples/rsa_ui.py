@@ -18,7 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301  USA
 
-from Tkconstants import END
+try:
+    from tkinter.constants import END
+except ImportError:
+    from Tkinter.contants import END
+
 import tkgen.gengui
 
 
@@ -53,7 +57,7 @@ def generate_keys(p, q):
     n = p * q
     m = (p - 1) * (q - 1)
 
-    e = long(2)
+    e = int(2)
     while e < m:
         if euclid(e, m) == 1:
             break
@@ -78,9 +82,9 @@ if __name__ == '__main__':
     d_entry = root.get('d_msg')
 
     def ok(event=None):
-        p = long(p_v.get())
-        q = long(q_v.get())
-        msg = long(m_v.get())
+        p = int(p_v.get())
+        q = int(q_v.get())
+        msg = int(m_v.get())
 
         pub_key, priv_key = generate_keys(p, q)
 

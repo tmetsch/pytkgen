@@ -24,9 +24,18 @@ Created on Apr 21, 2011
 @author: tmetsch
 """
 
-from tkinter import Tk, IntVar, StringVar
-import tkinter
-import ttk
+try:
+    # python 3
+    import tkinter
+except ImportError:
+    # python 2
+    import Tkinter as tkinter
+
+try:
+    from tkinter import ttk
+except ImportError:
+    ttk = None
+
 import json
 import os
 
@@ -60,7 +69,7 @@ def _contains_list(items):
     return result
 
 
-class TkJson(Tk):
+class TkJson(tkinter.Tk):
     """
     Simple class which wraps Tk and uses some JSON to contruct a GUI.
     """
@@ -76,7 +85,7 @@ class TkJson(Tk):
         """
         # Needs to be done this way - because base class do not derive from
         # object :-(
-        Tk.__init__(self)
+        tkinter.Tk.__init__(self)
         self.preferTk = preferTk
         self.title(title)
 
@@ -126,14 +135,14 @@ class TkJson(Tk):
 
         try:
             widget_factory = getattr(
-                Tkinter, name) if self.preferTk else getattr(ttk, name)
+                tkinter, name) if self.preferTk else getattr(ttk, name)
         except AttributeError:
             import traceback
             traceback.print_exc()
             try:
                 widget_factory = getattr(
-                    ttk, name) if self.preferTk else getattr(Tkinter, name)
-            except AttributeError as e:
+                    ttk, name) if self.preferTk else getattr(tkinter, name)
+            except AttributeError:
                 import traceback
                 traceback.print_exc()
                 raise AttributeError(
@@ -144,7 +153,6 @@ class TkJson(Tk):
                 widget = widget_factory(parent, **opt)
                 break
             except Exception as e:
-                print e
                 if len(opt) == 0:
                     break
                 del opt[str(e).split()[2][2:-1]]
@@ -235,7 +243,8 @@ class TkJson(Tk):
                 # so we have an attribute list...
                 options[str(key)] = dictionary[key]
 
-        return [row, column], [colspan, rowspan, rowweight, colweight], [padx, pady, sticky], options
+        return [row, column], [colspan, rowspan, rowweight, colweight], \
+               [padx, pady, sticky], options
 
     ##
     # Rest is public use :-)
@@ -262,7 +271,7 @@ class TkJson(Tk):
         name -- Name of the Checkbox.
         focus -- indicates wether this item has the focus.
         """
-        var = IntVar()
+        var = tkinter.IntVar()
         item = self.get(name)
         item.config(variable=var)
 
@@ -280,7 +289,7 @@ class TkJson(Tk):
         cmd -- If key is defined cmd needs to be defined.
         focus -- Indicates wether this entry should take focus.
         """
-        var = StringVar()
+        var = tkinter.StringVar()
 
         item = self.get(name)
         item.config(textvariable=var)
@@ -299,7 +308,7 @@ class TkJson(Tk):
 
         name -- Name of the Label.
         """
-        var = StringVar()
+        var = tkinter.StringVar()
         item = self.get(name)
         item.config(textvariable=var)
         return var
@@ -351,10 +360,11 @@ class TkJson(Tk):
         """
         if self.menu is None and popup is False:
             # If no menu exists create one and add it to the Tk root.
-            self.menu = Tkinter.Menu(self, tearoff=0)
+            self.menu = tkinter.Menu(self, tearoff=0)
             self.config(menu=self.menu)
 
-        if name is None and parent is None and popup is False and len(commands.keys()) > 0:
+        if name is None and parent is None and popup is False \
+                and len(commands.keys()) > 0:
             # Just create a Menu entry.
             for key in commands:
                 self.menu.add_command(label=key, command=commands[key])
@@ -362,11 +372,11 @@ class TkJson(Tk):
         elif name is not None and popup is False and len(commands.keys()) > 0:
             if parent is None:
                 # Create a top-level drop down menu.
-                tmp_menu = Tkinter.Menu(self.menu, tearoff=0)
+                tmp_menu = tkinter.Menu(self.menu, tearoff=0)
                 self.menu.add_cascade(label=name, menu=tmp_menu)
             else:
                 # Create a submenu.
-                tmp_menu = Tkinter.Menu(parent, tearoff=0)
+                tmp_menu = tkinter.Menu(parent, tearoff=0)
                 parent.add_cascade(label=name, menu=tmp_menu)
 
             for key in commands:
@@ -374,7 +384,7 @@ class TkJson(Tk):
 
             return tmp_menu
         elif popup is True and len(commands.keys()) > 0:
-            tmp_menu = Tkinter.Menu(self, tearoff=0)
+            tmp_menu = tkinter.Menu(self, tearoff=0)
             for key in commands:
                 tmp_menu.add_command(label=key, command=commands[key])
 
@@ -403,7 +413,7 @@ class TkJson(Tk):
         filename -- The file which describes the content of the tab.
         name -- The name of the tab.
         """
-        frame = Tkinter.Frame()
+        frame = tkinter.Frame()
         self.create_from_file(frame, filename)
         parent.add(frame, text=name)
 
@@ -414,7 +424,7 @@ class TkJson(Tk):
         parent -- The parent notebook widget instance.
         title -- The title for the dialog.
         """
-        dialog = Tkinter.Toplevel()
+        dialog = tkinter.Toplevel()
         dialog.title(title)
         self.create_from_file(dialog, filename)
         dialog.grid()
