@@ -84,6 +84,11 @@ Manager:
 Changelog
 ---------
 
+1.5
+
+  * Merge several cool contribs from community
+  * enabled it to work with python 2.* and 3.*
+
 1.4
 
   * Support for sticky attribute in the JSON file
