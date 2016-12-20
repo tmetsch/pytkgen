@@ -21,7 +21,7 @@
 try:
     from tkinter.constants import END
 except ImportError:
-    from Tkinter.contants import END
+    from Tkinter import END
 
 import tkgen.gengui
 
