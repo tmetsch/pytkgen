@@ -40,6 +40,7 @@ except ImportError:
 
 import json
 import os
+import traceback
 
 
 def _contains_dict(items):
@@ -139,13 +140,10 @@ class TkJson(tkinter.Tk):
             widget_factory = getattr(
                 tkinter, name) if self.preferTk else getattr(ttk, name)
         except AttributeError:
-            import traceback
-            traceback.print_exc()
             try:
                 widget_factory = getattr(
                     ttk, name) if self.preferTk else getattr(tkinter, name)
             except AttributeError:
-                import traceback
                 traceback.print_exc()
                 raise AttributeError(
                     'Neither Tkinter nor ttk have a widget named: ', name)
