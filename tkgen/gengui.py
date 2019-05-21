@@ -41,6 +41,7 @@ except ImportError:
 import json
 import os
 import traceback
+import yaml
 
 
 def _contains_dict(items):
@@ -72,7 +73,7 @@ def _contains_list(items):
     return result
 
 
-class TkJson(tkinter.Tk):
+class _TkParser(tkinter.Tk):
     """
     Simple class which wraps Tk and uses some JSON to contruct a GUI.
     """
@@ -81,21 +82,7 @@ class TkJson(tkinter.Tk):
     widgets = {}
 
     def __init__(self, filename, title='Tk', preferTk=True):
-        """
-        Initialize a Tk root and created the UI from a JSON file.
-
-        Returns the Tk root.
-        """
-        # Needs to be done this way - because base class do not derive from
-        # object :-(
-        tkinter.Tk.__init__(self)
-        self.preferTk = preferTk
-        self.title(title)
-
-        user_interface = json.load(open(filename)) if os.path.isfile(
-            filename) else json.loads(filename)
-
-        self.create_widgets(self, user_interface)
+        pass
 
     def create_widgets(self, parent, items):
         """
@@ -105,7 +92,7 @@ class TkJson(tkinter.Tk):
             current = items[name]
             if isinstance(current,
                           dict) and not _contains_list(
-                              current) and not _contains_dict(current):
+                current) and not _contains_dict(current):
                 self._create_widget(name, parent, current)
 
             elif isinstance(current, dict) and _contains_list(current):
@@ -441,3 +428,44 @@ class TkJson(tkinter.Tk):
         index -- If index < current # of items - insert at the top.
         """
         return treeview.insert(parent, index, text=name, values=values)
+
+
+class TkJson(_TkParser):
+    def __init__(self, filename, title='Tk', preferTk=True):
+        """
+        Initialize a Tk root and created the UI from a JSON file.
+
+        Returns the Tk root.
+        """
+        # Needs to be done this way - because base class do not derive from
+        # object :-(
+        tkinter.Tk.__init__(self)
+        self.preferTk = preferTk
+        self.title(title)
+
+        user_interface = json.load(open(filename)) if os.path.isfile(
+            filename) else json.loads(filename)
+
+        self.create_widgets(self, user_interface)
+        super().__init__(filename, title, preferTk)
+
+
+class TkYaml(_TkParser):
+    def __init__(self, filename, title='Tk', preferTk=True):
+        """
+        Initialize a Tk root and created the UI from a JSON file.
+
+        Returns the Tk root.
+        """
+        # Needs to be done this way - because base class do not derive from
+        # object :-(
+        tkinter.Tk.__init__(self)
+        self.preferTk = preferTk
+        self.title(title)
+
+        user_interface = yaml.load(open(filename)) if os.path.isfile(
+            filename) else yaml.loads(filename)
+
+        self.create_widgets(self, user_interface)
+        super().__init__(filename, title, preferTk)
+
