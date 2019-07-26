@@ -281,6 +281,7 @@ class TkJson(tkinter.Tk):
         var = tkinter.IntVar()
         item = self.get(name)
         item.config(variable=var)
+        item.var = var
 
         if focus:
             item.focus_set()
@@ -300,6 +301,7 @@ class TkJson(tkinter.Tk):
 
         item = self.get(name)
         item.config(textvariable=var)
+        item.var = var
 
         if focus:
             item.focus_set()
@@ -318,6 +320,7 @@ class TkJson(tkinter.Tk):
         var = tkinter.StringVar()
         item = self.get(name)
         item.config(textvariable=var)
+        item.var = var
         return var
 
     def get(self, name):
