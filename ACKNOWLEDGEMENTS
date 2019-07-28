@@ -4,3 +4,4 @@
 * Thanks to https://github.com/giuliol for adding yaml support.
 * Thanks to https://github.com/tjanpool and https://github.com/vedk for porting to Python 3.
 * Thanks to https://github.com/tbmale for suggesting the TK vs TKK preference option.
+* Thanks to https://github.com/kicer for fixing a minor issue with widget variables.
