@@ -51,8 +51,8 @@ def _contains_dict(items):
     items -- The set of items to test.
     """
     result = False
-    for item in items.keys():
-        if isinstance(items[item], dict):
+    for key, value in items.items():
+        if isinstance(value, dict):
             result = True
             break
     return result
@@ -65,15 +65,15 @@ def _contains_list(items):
     items -- The set of items to test.
     """
     result = False
-    for item in items.keys():
-        if isinstance(items[item], list) and item is not item.lower():
+    for key, value in items.items():
+        if isinstance(value, list) and key is not key.lower():
             # the .lower check ensures that I can have attribute lists
             result = True
             break
     return result
 
 
-class TkJson(tkinter.Tk):
+class TkBase(tkinter.Tk):
     """
     Simple class which wraps Tk and uses some JSON to contruct a GUI.
     """
@@ -109,24 +109,14 @@ class TkJson(tkinter.Tk):
         """
         Creates a set of Tk widgets.
         """
-        for name in items.keys():
-            current = items[name]
-            if isinstance(current, dict) and not _contains_list(
-                    current) and not _contains_dict(current):
-                self._create_widget(name, parent, current)
-
-            elif isinstance(current, dict) and _contains_list(current):
+        for name, current in items.items():
+            if isinstance(current, dict):
                 widget = self._create_widget(name, parent, current)
-                if not widget:
-                    break
+                if _contains_list(current) or _contains_dict(current):
+                    if not widget:
+                        break
 
-                self.create_widgets(widget, current)
-            elif isinstance(current, dict) and _contains_dict(current):
-                widget = self._create_widget(name, parent, current)
-                if not widget:
-                    break
-
-                self.create_widgets(widget, current)
+                    self.create_widgets(widget, current)
             elif isinstance(current, list):
                 for item in current:
                     self.create_widgets(parent, {name: item})
@@ -453,7 +443,22 @@ class TkJson(tkinter.Tk):
         return treeview.insert(parent, index, text=name, values=values)
 
 
-class TkYaml(TkJson):
+class TkJson(TkBase):
+    """
+    Wrapper class for parsing json files.
+    """
+
+    def __init__(self, filename, title='Tk', prefer_tk=True):
+        """
+        Initialize a Tk root and created the UI from a JSON file.
+
+        Returns the Tk root.
+        """
+        super(TkJson, self).__init__(filename, title, prefer_tk,
+                                     file_type='json')
+
+
+class TkYaml(TkBase):
     """
     Wrapper class for parsing yaml files.
     """
